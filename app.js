@@ -9,7 +9,11 @@ GAME RULES:
 
 */
 var scores,roundScore,activePlayer,dice;
+init();
 
+function init()
+
+{
 scores=[0,0];
 roundScore=0;
 activePlayer=0;
@@ -21,6 +25,8 @@ document.getElementById('score-1').innerHTML=0;
 
 
 document.querySelector('.dice').style.display='none';
+
+}
 
 
 //we want the event to call the function for us.
@@ -39,13 +45,41 @@ document.querySelector('.btn-roll').addEventListener('click',function(){
     }
     else
     {
-        activePlayer===0 ? activePlayer=1 : activePlayer=0;
-        roundScore=0;
-        document.getElementById('current-0').textContent=0;
-        document.getElementById('current-1').textContent=0;
-
-        document.querySelector('.player-0-panel').classList.toggle('active');
-        document.querySelector('.player-1-panel').classList.toggle('active');
+       nextPlayer();
 
     }
 });
+
+//for hold button 
+document.querySelector('.btn-hold').addEventListener('click', function () {
+   
+
+    scores[activePlayer] += roundScore;
+
+    document.querySelector("#score-" + activePlayer).textContent = scores[activePlayer];
+
+    if (scores[activePlayer] >= 20) {
+        document.querySelector('#name-' + activePlayer).textContent = 'Winner!';
+        document.querySelector('.dice').style.display = 'none';
+        document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+        document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+    }
+    else {
+        nextPlayer();
+    }
+
+});
+
+//changing the player
+function nextPlayer()
+{
+  activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    roundScore = 0;
+    document.getElementById('current-0').textContent = 0;
+    document.getElementById('current-1').textContent = 0;
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+    document.querySelector('.dice').style.display = 'none';  
+}
+
+document.querySelector('.btn-new').addEventListener('click',init);
